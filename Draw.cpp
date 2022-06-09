@@ -17,8 +17,25 @@ namespace Engine {
             const Color& color
     ) const {
         color.setRenderColor(m_renderer);
-        for (int x = pos.x; x <= pos.x + size.x; x++)
-            for (int y = pos.y; y < pos.y + size.y; y++)
-                SDL_RenderDrawPoint(m_renderer, x, y);
+
+        //checking for special cases
+        if (size.x == 0 || size.y == 0)
+            return;
+
+        if (size.x == 1) {
+            SDL_RenderDrawLine(
+                    m_renderer, pos.x, pos.y, pos.x, pos.y + size.y
+            );
+            return;
+        } else if (size.y == 1) {
+            SDL_RenderDrawLine(
+                    m_renderer, pos.x, pos.y, pos.x + size.x, pos.y
+            );
+            return;
+        }
+
+        //for the normal case
+        SDL_Rect sdlRect = {pos.x, pos.y, size.x, size.y};
+        SDL_RenderFillRect(m_renderer, &sdlRect);
     }
 } // Engine

@@ -114,22 +114,52 @@ namespace Engine {
     }
 
     void Color::setRenderColor(SDL_Renderer* renderer) const {
-        SDL_SetRenderDrawColor(
-                renderer, this->red, this->green, this->blue, this->alpha
+        SDL_SetRenderDrawBlendMode(
+                renderer, (alpha == 255 ? SDL_BLENDMODE_NONE : SDL_BLENDMODE_BLEND)
         );
+        SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+    }
+
+    //random generator
+    RandomGenerator::RandomGenerator() {
+        std::random_device dev;
+        m_rng = std::make_unique<std::mt19937>(dev());
+    }
+
+    int RandomGenerator::random(const Vector2<int>& range) const {
+        std::uniform_int_distribution<int> dist(range.x, range.y);
+        return dist(*m_rng);
+    }
+
+    float RandomGenerator::random(const Vector2<float> &range) const {
+        std::uniform_real_distribution<float> dist(range.x, range.y);
+        return dist(*m_rng);
+    }
+
+    double RandomGenerator::random(const Vector2<double> &range) const {
+        std::uniform_real_distribution<double> dist(range.x, range.y);
+        return dist(*m_rng);
+    }
+
+    Uint8 RandomGenerator::random(const Vector2<Uint8> &range) const {
+        std::uniform_int_distribution<Uint8> dist(range.x, range.y);
+        return dist(*m_rng);
     }
 } // Engine
 
+//printing a vector2
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const Engine::Vector2<T>& vec) {
     os << '{' << vec.x << ", " << vec.y << '}';
     return os;
 }
 
-//only for scalar types
+//compile Vector2 only for scalar types
 template class Engine::Vector2<int>;
 template std::ostream& operator<<(std::ostream& os, const Engine::Vector2<int>& vec);
 template class Engine::Vector2<float>;
 template std::ostream& operator<<(std::ostream& os, const Engine::Vector2<float>& vec);
 template class Engine::Vector2<double>;
 template std::ostream& operator<<(std::ostream& os, const Engine::Vector2<double>& vec);
+template class Engine::Vector2<Uint8>;
+template std::ostream& operator<<(std::ostream& os, const Engine::Vector2<Uint8>& vec);

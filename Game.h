@@ -5,10 +5,12 @@
 #ifndef ESCAPE_GAME_H
 #define ESCAPE_GAME_H
 
+#include "Draw.h"
+#include "Utilities.h"
 #include <SDL2/SDL.h>
+#include <iostream>
 #include <memory>
 #include <exception>
-#include "Draw.h"
 
 //everything that relates to the game logics
 namespace Game {
@@ -21,6 +23,7 @@ namespace Game {
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
         bool m_run = true;
+        Engine::RandomGenerator m_randGen;
         std::shared_ptr<Engine::DrawHandler> m_draw;
 
         void clearScreen();
