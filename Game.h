@@ -6,6 +6,9 @@
 #define ESCAPE_GAME_H
 
 #include <SDL2/SDL.h>
+#include <memory>
+#include <exception>
+#include "Draw.h"
 
 //everything that relates to the game logics
 namespace Game {
@@ -18,6 +21,7 @@ namespace Game {
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
         bool m_run = true;
+        std::shared_ptr<Engine::DrawHandler> m_draw;
 
         void clearScreen();
         void updateScreen();

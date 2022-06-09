@@ -3,5 +3,5 @@ project(escape)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(escape main.cpp Game.cpp Game.h Draw.cpp Draw.h Vec2.cpp Vec2.h)
+add_executable(escape main.cpp Game.cpp Game.h Draw.cpp Draw.h Utilities.cpp Utilities.h)
 target_link_libraries(escape SDL2)
