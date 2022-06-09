@@ -11,26 +11,33 @@ namespace Engine {
             std::runtime_error("invalid renderer");
     }
 
+    void DrawHandler::line(
+            const Vector2<int> &pos1, const Vector2<int> &pos2, const Color& color
+    ) const {
+        color.setRenderColor(m_renderer);
+        SDL_RenderDrawLine(m_renderer,
+               pos1.x, pos1.y, pos2.x, pos2.y
+       );
+    }
+
     void DrawHandler::rectangle(
-            const Vector2<int>& pos,
-            const Vector2<int>& size,
-            const Color& color
+            const Vector2<int>& pos, const Vector2<int>& size, const Color& color
     ) const {
         color.setRenderColor(m_renderer);
 
         //checking for special cases
-        if (size.x == 0 || size.y == 0)
+        if (!size.x || !size.y)
             return;
 
         if (size.x == 1) {
-            SDL_RenderDrawLine(
-                    m_renderer, pos.x, pos.y, pos.x, pos.y + size.y
-            );
+            Vector2<int> pos2 = pos;
+            pos2.y += size.y;
+            line(pos, pos2, color);
             return;
         } else if (size.y == 1) {
-            SDL_RenderDrawLine(
-                    m_renderer, pos.x, pos.y, pos.x + size.x, pos.y
-            );
+            Vector2<int> pos2 = pos;
+            pos2.x += size.x;
+            line(pos, pos2, color);
             return;
         }
 

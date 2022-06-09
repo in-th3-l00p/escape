@@ -18,10 +18,11 @@ namespace Engine {
     public:
         explicit DrawHandler(SDL_Renderer* renderer);
 
+        void line(
+                const Vector2<int>& pos1, const Vector2<int>& pos2, const Color& color
+        ) const;
         void rectangle(
-                const Vector2<int>& pos,
-                const Vector2<int>& size,
-                const Color& color
+                const Vector2<int>& pos, const Vector2<int>& size, const Color& color
         ) const;
     };
 } // Engine
