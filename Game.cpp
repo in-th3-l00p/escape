@@ -40,7 +40,16 @@ namespace Game {
 
     void Game::gameLoop() {
         SDL_Event event;
+        Uint64 now{SDL_GetPerformanceCounter()}, last{0};
+        double deltaTime = 0;
         while (m_run) {
+            last = now;
+            now = SDL_GetPerformanceCounter();
+            deltaTime = static_cast<double>(
+                    static_cast<double>((now - last) * 1000) /
+                    static_cast<double>(SDL_GetPerformanceFrequency())
+            );
+
             //event driven programming
             while (SDL_PollEvent(&event))
                 switch (event.type) {
@@ -52,8 +61,7 @@ namespace Game {
             clearScreen();
 
             //rendering
-            using namespace Engine;
-            m_draw->circle({500, 500}, 500, Color{255, 0, 0, 255});
+            std::cout << deltaTime << '\n';
 
             updateScreen();
         }
