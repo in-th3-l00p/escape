@@ -53,26 +53,7 @@ namespace Game {
 
             //rendering
             using namespace Engine;
-            for (int i = 0; i < 200; i++) {
-                Vector2<int> pos{
-                    m_randGen.random(Vector2<int>(0, 1280)),
-                    m_randGen.random(Vector2<int>(0, 720))
-                };
-
-                Vector2<int> size{
-                        m_randGen.random(Vector2<int>(0, 1000)),
-                        m_randGen.random(Vector2<int>(0, 1000))
-                };
-
-                Color color{
-                        m_randGen.random(Vector2<Uint8>(0, 255)),
-                        m_randGen.random(Vector2<Uint8>(0, 255)),
-                        m_randGen.random(Vector2<Uint8>(0, 255)),
-                        m_randGen.random(Vector2<Uint8>(0, 255))
-                };
-
-                m_draw->rectangle(pos, size, color);
-            }
+            m_draw->circle({500, 500}, 500, Color{255, 0, 0, 255});
 
             updateScreen();
         }

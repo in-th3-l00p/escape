@@ -11,6 +11,15 @@ namespace Engine {
             std::runtime_error("invalid renderer");
     }
 
+    void DrawHandler::point(const int x, const int y, const Color &color) const {
+        point({x, y}, color);
+    }
+
+    void DrawHandler::point(const Vector2<int> &pos, const Color &color) const {
+        color.setRenderColor(m_renderer);
+        SDL_RenderDrawPoint(m_renderer, pos.x, pos.y);
+    }
+
     void DrawHandler::line(
             const Vector2<int> &pos1, const Vector2<int> &pos2, const Color& color
     ) const {
@@ -45,4 +54,46 @@ namespace Engine {
         SDL_Rect sdlRect = {pos.x, pos.y, size.x, size.y};
         SDL_RenderFillRect(m_renderer, &sdlRect);
     }
+
+    void DrawHandler::circle(
+            const Vector2<int> &pos, const int &radius, const Color &color
+    ) const {
+        color.setRenderColor(m_renderer);
+        if (!radius)
+            return;
+
+        //Bresenhams algorithm
+        Vector2<int> drawPos{0, radius};
+        int d = 3 - 2 * radius;
+        while (drawPos.x <= drawPos.y) {
+            line(
+                    {pos.x + drawPos.x, pos.y + drawPos.y},
+                    {pos.x - drawPos.x, pos.y + drawPos.y},
+                    color
+            );
+            line(
+                    {pos.x + drawPos.x, pos.y - drawPos.y},
+                    {pos.x - drawPos.x, pos.y - drawPos.y},
+                    color
+            );
+            line(
+                    {pos.x + drawPos.y, pos.y + drawPos.x},
+                    {pos.x - drawPos.y, pos.y + drawPos.x},
+                    color
+            );
+            line(
+                    {pos.x + drawPos.y, pos.y - drawPos.x},
+                    {pos.x - drawPos.y, pos.y - drawPos.x},
+                    color
+            );
+
+            drawPos.x++;
+            if (d > 0) {
+                drawPos.y--;
+                d = d + 4 * (drawPos.x - drawPos.y) + 10;
+            } else
+                d = d + 4 * drawPos.x + 6;
+        }
+    }
+
 } // Engine
