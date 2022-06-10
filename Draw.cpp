@@ -8,14 +8,18 @@ namespace Engine {
     DrawHandler::DrawHandler(SDL_Renderer *renderer) {
         m_renderer = renderer;
         if (m_renderer == nullptr)
-            std::runtime_error("invalid renderer");
+            throw std::runtime_error("invalid renderer");
     }
 
-    void DrawHandler::point(const int x, const int y, const Color &color) const {
+    void DrawHandler::point(const int& x, const int& y, const Color &color) const {
+        if (m_renderer == nullptr)
+            return;
         point({x, y}, color);
     }
 
     void DrawHandler::point(const Vector2<int> &pos, const Color &color) const {
+        if (m_renderer == nullptr)
+            return;
         color.setRenderColor(m_renderer);
         SDL_RenderDrawPoint(m_renderer, pos.x, pos.y);
     }
@@ -23,6 +27,8 @@ namespace Engine {
     void DrawHandler::line(
             const Vector2<int> &pos1, const Vector2<int> &pos2, const Color& color
     ) const {
+        if (m_renderer == nullptr)
+            return;
         color.setRenderColor(m_renderer);
         SDL_RenderDrawLine(m_renderer,
                pos1.x, pos1.y, pos2.x, pos2.y
@@ -32,11 +38,9 @@ namespace Engine {
     void DrawHandler::rectangle(
             const Vector2<int>& pos, const Vector2<int>& size, const Color& color
     ) const {
-        color.setRenderColor(m_renderer);
-
-        //checking for special cases
-        if (!size.x || !size.y)
+        if (m_renderer == nullptr || !size.x || !size.y)
             return;
+        color.setRenderColor(m_renderer);
 
         if (size.x == 1) {
             Vector2<int> pos2 = pos;
@@ -58,9 +62,9 @@ namespace Engine {
     void DrawHandler::circle(
             const Vector2<int> &pos, const int &radius, const Color &color
     ) const {
-        color.setRenderColor(m_renderer);
-        if (!radius)
+        if (m_renderer == nullptr || !radius)
             return;
+        color.setRenderColor(m_renderer);
 
         //Bresenhams algorithm
         Vector2<int> drawPos{0, radius};

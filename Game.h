@@ -7,6 +7,7 @@
 
 #include "Draw.h"
 #include "Utilities.h"
+#include "EntityComponentSystem.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <memory>
@@ -14,6 +15,18 @@
 
 //everything that relates to the game logics
 namespace Game {
+    class TestEntity: public Engine::Entity {
+    public:
+        TestEntity() = default;
+        void render(Engine::DrawHandler& draw, SDL_Renderer* renderer) override;
+    };
+
+    class TestScene: public Engine::Scene {
+    public:
+        TestScene(Engine::DrawHandler& draw, SDL_Renderer* renderer);
+        void sceneUpdate(double &deltaTime) override;
+    };
+
     static constexpr int windowWidth = 1280, windowHeight = 720;
     static const char* windowTitle = "Escape - horror game";
 
@@ -24,7 +37,8 @@ namespace Game {
         SDL_Renderer* m_renderer;
         bool m_run = true;
         Engine::RandomGenerator m_randGen;
-        std::shared_ptr<Engine::DrawHandler> m_draw;
+        Engine::DrawHandler m_draw;
+        std::unique_ptr<Engine::Scene> m_scene; //main scene
 
         void clearScreen();
         void updateScreen();

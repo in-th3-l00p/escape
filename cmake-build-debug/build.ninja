@@ -73,6 +73,12 @@ build CMakeFiles/escape.dir/Utilities.cpp.o: CXX_COMPILER__escape_Debug /home/in
   OBJECT_DIR = CMakeFiles/escape.dir
   OBJECT_FILE_DIR = CMakeFiles/escape.dir
 
+build CMakeFiles/escape.dir/EntityComponentSystem.cpp.o: CXX_COMPILER__escape_Debug /home/intheloop/Desktop/escape/EntityComponentSystem.cpp || cmake_object_order_depends_target_escape
+  DEP_FILE = CMakeFiles/escape.dir/EntityComponentSystem.cpp.o.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles/escape.dir
+  OBJECT_FILE_DIR = CMakeFiles/escape.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target escape
@@ -81,7 +87,7 @@ build CMakeFiles/escape.dir/Utilities.cpp.o: CXX_COMPILER__escape_Debug /home/in
 #############################################
 # Link the executable escape
 
-build escape: CXX_EXECUTABLE_LINKER__escape_Debug CMakeFiles/escape.dir/main.cpp.o CMakeFiles/escape.dir/Game.cpp.o CMakeFiles/escape.dir/Draw.cpp.o CMakeFiles/escape.dir/Utilities.cpp.o
+build escape: CXX_EXECUTABLE_LINKER__escape_Debug CMakeFiles/escape.dir/main.cpp.o CMakeFiles/escape.dir/Game.cpp.o CMakeFiles/escape.dir/Draw.cpp.o CMakeFiles/escape.dir/Utilities.cpp.o CMakeFiles/escape.dir/EntityComponentSystem.cpp.o
   FLAGS = -g
   LINK_LIBRARIES = -lSDL2
   OBJECT_DIR = CMakeFiles/escape.dir

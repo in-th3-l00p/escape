@@ -5,10 +5,36 @@
 #include "Game.h"
 #define RESIZALBE SDL_WINDOW_RESIZABLE
 
+//for the TestScene
+namespace Game {
+    void TestEntity::render(Engine::DrawHandler &draw, SDL_Renderer *renderer) {
+        draw.rectangle({100, 100}, {100, 100}, {255, 0, 0, 255});
+    }
+
+    TestScene::TestScene(
+            Engine::DrawHandler &draw, SDL_Renderer *renderer
+    ) : Scene(draw, renderer) {
+        m_ecs.addEntity(std::make_shared<TestEntity>());
+    }
+
+    void TestScene::sceneUpdate(double &deltaTime) {
+        std::cout << "Debug info:\n";
+        std::cout << "Delta time: " << deltaTime << '\n';
+        std::cout << "Entity component system:\n";
+        if (m_ecs.getEntities().size())
+            for (auto& entity: m_ecs.getEntities())
+                std::cout << entity->getUUID() << '\n';
+        else
+            std::cout << "no entity\n";
+        std::cout << '\n';
+    }
+
+} // Game
+
 namespace Game {
     Game::Game() {
         if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-            std::runtime_error(SDL_GetError());
+            throw std::runtime_error(SDL_GetError());
 
         SDL_CreateWindowAndRenderer(
                 windowWidth, windowHeight, RESIZALBE,
@@ -16,9 +42,10 @@ namespace Game {
         );
 
         if (m_window == nullptr || m_renderer == nullptr)
-            std::runtime_error(SDL_GetError());
+            throw std::runtime_error(SDL_GetError());
 
-        m_draw = std::make_shared<Engine::DrawHandler>(m_renderer);
+        m_draw = Engine::DrawHandler(m_renderer);
+        m_scene = std::make_unique<TestScene>(m_draw, m_renderer);
 
         SDL_SetWindowTitle(m_window, windowTitle);
     }
@@ -59,11 +86,9 @@ namespace Game {
                 }
 
             clearScreen();
-
-            //rendering
-            std::cout << deltaTime << '\n';
-
+            m_scene->update(deltaTime);
             updateScreen();
         }
     }
+
 } // Game

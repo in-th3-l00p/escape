@@ -16,9 +16,10 @@ namespace Engine {
         SDL_Renderer* m_renderer;
 
     public:
+        DrawHandler() = default;
         explicit DrawHandler(SDL_Renderer* renderer);
 
-        void point(const int x, const int y, const Color& color) const;
+        void point(const int& x, const int& y, const Color& color) const;
         void point(const Vector2<int>& pos, const Color& color) const;
 
         void line(
