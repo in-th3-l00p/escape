@@ -7,8 +7,20 @@
 
 //for the TestScene
 namespace Game {
+    void TestEntity::update(double& deltaTime) {
+        using namespace Engine::Input;
+        if (isKeyPressed(Key::KEY_W))
+            position.y -= 1 * deltaTime;
+        else if (isKeyPressed(Key::KEY_S))
+            position.y += 1 * deltaTime;
+        else if (isKeyPressed(Key::KEY_A))
+            position.x -= 1 * deltaTime;
+        else if (isKeyPressed(Key::KEY_D))
+            position.x += 1 * deltaTime;
+    }
+
     void TestEntity::render(Engine::DrawHandler &draw, SDL_Renderer *renderer) {
-        draw.rectangle({100, 100}, {100, 100}, {255, 0, 0, 255});
+        draw.rectanglef(position, {100, 100}, {255, 0, 0, 255});
     }
 
     TestScene::TestScene(

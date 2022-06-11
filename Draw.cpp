@@ -14,7 +14,7 @@ namespace Engine {
     void DrawHandler::point(const int& x, const int& y, const Color &color) const {
         if (m_renderer == nullptr)
             return;
-        point({x, y}, color);
+        point(Vector2<int>{x, y}, color);
     }
 
     void DrawHandler::point(const Vector2<int> &pos, const Color &color) const {
@@ -22,6 +22,14 @@ namespace Engine {
             return;
         color.setRenderColor(m_renderer);
         SDL_RenderDrawPoint(m_renderer, pos.x, pos.y);
+    }
+
+    void DrawHandler::pointf(const float &x, const float &y, const Color &color) const {
+        point({static_cast<int>(std::round(x)), static_cast<int>(std::round(y))}, color);
+    }
+
+    void DrawHandler::pointf(const Vector2<float> &pos, const Color &color) const {
+        point(pos.x, pos.y, color);
     }
 
     void DrawHandler::line(
@@ -33,6 +41,22 @@ namespace Engine {
         SDL_RenderDrawLine(m_renderer,
                pos1.x, pos1.y, pos2.x, pos2.y
        );
+    }
+
+    void DrawHandler::linef(
+            const Vector2<float> &pos1, const Vector2<float> &pos2, const Color &color
+    ) const {
+        line(
+                Vector2<int>{
+                    static_cast<int>(std::round(pos1.x)),
+                    static_cast<int>(std::round(pos1.y))
+                },
+                Vector2<int>{
+                    static_cast<int>(std::round(pos2.x)),
+                    static_cast<int>(std::round(pos2.y))
+                },
+                color
+        );
     }
 
     void DrawHandler::rectangle(
@@ -57,6 +81,22 @@ namespace Engine {
         //for the normal case
         SDL_Rect sdlRect = {pos.x, pos.y, size.x, size.y};
         SDL_RenderFillRect(m_renderer, &sdlRect);
+    }
+
+    void DrawHandler::rectanglef(
+            const Vector2<float> &pos, const Vector2<float> &size, const Color &color
+    ) const {
+        rectangle(
+                {
+                    static_cast<int>(std::round(pos.x)),
+                    static_cast<int>(std::round(pos.y))
+                },
+                {
+                    static_cast<int>(std::round(size.x)),
+                    static_cast<int>(std::round(size.y)),
+                },
+                color
+        );
     }
 
     void DrawHandler::circle(
@@ -99,5 +139,16 @@ namespace Engine {
                 d = d + 4 * drawPos.x + 6;
         }
     }
+
+    void DrawHandler::circlef(const Vector2<float> &pos, const float &radius, const Color &color) const {
+        circle(
+                {
+                    static_cast<int>(std::round(pos.x)),
+                    static_cast<int>(std::round(pos.y))
+                },
+                static_cast<int>(radius), color
+        );
+    }
+
 
 } // Engine

@@ -8,6 +8,7 @@
 #include "Draw.h"
 #include "Utilities.h"
 #include "EntityComponentSystem.h"
+#include "Input.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <memory>
@@ -16,8 +17,12 @@
 //everything that relates to the game logics
 namespace Game {
     class TestEntity: public Engine::Entity {
+    private:
+        Engine::Vector2<float> position{100, 100};
+
     public:
         TestEntity() = default;
+        void update(double& deltaTime) override;
         void render(Engine::DrawHandler& draw, SDL_Renderer* renderer) override;
     };
 
